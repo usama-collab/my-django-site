@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load markdownify %}
+{% block title %}my blog{% endblock %}
+{% block content %}
+{% for post in posts %}
+<div class="post">
+
+    <div class="date">
+        <p>Published: {{ post.published_date }}</p>
+    </div>
+
+    <h1>
+        <a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a>
+    </h1>
+    <!-- <p>{{ post.text|linebreaksbr }}</p> -->
+    <p>{{ post.text | markdown | safe | truncatechars:600 | linebreaksbr }}</p>
+
+    <!-- showing approved comments at home page "post_list" -->
+    <a href="{% url 'blog:post_detail' post.id %}">Comments: {{ post.approved_comments.count }}</a>
+</div>
+{% endfor %}
+{% endblock %}
